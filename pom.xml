@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.gatling.demo</groupId>
-  <artifactId>gatling-maven-plugin-demo-java</artifactId>
+  <artifactId>gatling-java-poc</artifactId>
   <version>3.12.0</version>
 
   <properties>
@@ -24,8 +24,30 @@
       <version>${gatling.version}</version>
       <scope>test</scope>
     </dependency>
-  </dependencies>
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>3.13.0</version>
+    </dependency>
 
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-resources-plugin -->
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-resources-plugin</artifactId>
+      <version>3.3.1</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.4.2</version>
+    </dependency>
+
+
+
+  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -51,4 +73,5 @@
       </plugin>
     </plugins>
   </build>
+
 </project>

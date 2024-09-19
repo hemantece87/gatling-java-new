@@ -33,12 +33,6 @@ public class DummyAPITest extends Simulation {
 
             .pause(1,2);
 
-//            .exec(http("POST Request")
-//                    .post("/api/anotherEndpoint")
-//                    .header("Authorization", "#{authToken}") // Use the token in the Authorization header
-//                    .body(StringBody("{ \"attribute\": \"value\", \"token\": \"#{authToken}\" }")).asJson() // Use the token in the JSON body as well
-//                    .check(status().is(200))
-//            );
 
     {
         // Simulate 2 users and run the scenario for 10 seconds

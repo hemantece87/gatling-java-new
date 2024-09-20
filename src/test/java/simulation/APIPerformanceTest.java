@@ -1,17 +1,13 @@
 package simulation;
 
-import static com.typesafe.config.ConfigSyntax.JSON;
 import static io.gatling.javaapi.core.CoreDsl.*;
-import static io.gatling.javaapi.http.HttpDsl.*;
 import static config.PerfTestConfigs.*;
+import static transactions.LoginTransactions.*;
 
 import io.gatling.javaapi.core.*;
 import io.gatling.javaapi.http.*;
-import utils.DataProviderUtils;
 
-import static utils.DataProviderUtils.*;
-
-public class DummyAPITest extends Simulation {
+public class APIPerformanceTest extends Simulation {
 
     private static final int START_USER_COUNT = Integer.parseInt(System.getProperty("START_USERS", "5"));
     private static final int RAMP_USER_COUNT = Integer.parseInt(System.getProperty("RAMP_USERS", "10"));
@@ -25,42 +21,16 @@ public class DummyAPITest extends Simulation {
         System.out.printf("Ramping up to %d users over %d seconds%n", RAMP_USER_COUNT, RAMP_DURATION);
         System.out.printf("Total test duration: %d seconds%n", TEST_DURATION);
     }
+
     HttpProtocolBuilder httpProtocol = HttpDsl.http
             .baseUrl(BASE_URL)
             .acceptHeader("application/json")
             .contentTypeHeader("application/json");
 
-    private static final FeederBuilder.FileBased<String> csvFeeder = csv("TestData/testdata.csv").circular();
 
-    private static final ChainBuilder getAllItems =
-            exec(http("Get First endpoint")
-                            .get(GET_API_ENDPOINT)
-                            .check(status().is(200))
-                            .check(jmesPath("[? name=='Bert'].id").saveAs("id")));
-
-    private static final ChainBuilder getSpecificItem =
-            feed(csvFeeder)
-                    .exec(http("Get specific resource with id")
-                    .get(GET_API_ENDPOINT + "#{id}/")
-                    .check(status().is(200)));
-
-    private static final ChainBuilder register =
-            exec(session -> {
-                // Generate a random number
-                String randomNumber = DataProviderUtils.getRandomNumber(6); // 4-digit random number
-                return session.set("randomNumber", randomNumber);
-            }).
-                    exec(http("Register new user")
-                    .post(REGISTER_USER_ENDPOINT)
-                    .body(StringBody("{\n" +
-                            "    \"username\": \"test_#{randomNumber}\",\n" +
-                            "    \"password\": \"test\"\n" +
-                            "}")));
-
-    // Define the scenario
     ScenarioBuilder scenario = scenario("Test E2E flow")
             .forever().on(
-             exec(register)
+             exec(registerNewUser)
             .pause(1)
 
             .exec(getAllItems)
